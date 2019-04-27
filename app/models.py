@@ -2,6 +2,7 @@ from . import db
 from werkzeug.security import generate_password_hash,check_password_hash 
 from flask_login import UserMixin
 from . import login_manager
+from datetime import datetime
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -16,7 +17,16 @@ class User(UserMixin,db.Model):
     username =db.Column(db.String(255),index = True)
     email = db.Column(db.String(255),unique = True,index = True)
     role_id = db.Column(db.Integer,db.ForeignKey('roles.id'))
+    bio = db.Column(db.String(255))
+    profile_pic_path = db.Column(db.String())
     pass_secure = db.Column(db.String(255))
+    pitches = db.relationship('Review', backref = 'user',lazy = "dynamic")
+    comments = db.relationship("comment", backref="user", lazy = "dynamic")
+
+    def save_user(self):
+        db.session.add(self)
+        db.session.commit()
+
 
     @property
 
@@ -31,6 +41,15 @@ class User(UserMixin,db.Model):
     def verify_password(self,password):
         return check_password_hash(self.pass_secure,password)
 
+    def get_user_pitches(self):
+        user = User.query.filter_by(id = self.id).first()
+        return user.pitches
+
+    def get_user_comments(self):
+        user = User.query.filter_by(id = self.id).first()
+        return user.comments
+
+        
     def __repr__(self):
         return f'User {self.username}'
 
@@ -43,3 +62,43 @@ class Role(db.Model):
 
     def __repr__(self):
         return f'User {self.name}'
+
+        
+class Pitch(db.Model):
+
+    __tablename__ = 'pitches'
+
+    id = db.Column(db.Integer,primary_key= True)
+    post = db.Column(db.String(255), index = True)
+    title = db.Column(db.String(255),index = True)
+    date = db.Column(db.String)
+    time = db.Columns(db.String)
+    user_id = db.Column(db.Integer,db.ForeignKey('users.id'))
+    comments = db.relationship("Comment", backref = "pitch", lazy = "dynamic")
+
+    def save_pitch(self):
+        db.session.add(self)
+        db.session.commit()
+
+    @classmethod
+    def get_pitch(cls,id):
+        pitches = Pitch.query.filter_by(pitch_id=id).first()
+        comments = Comment.query.filter_by(pitch_id = pitch.id).order_by(Comment.time.desc())
+        return pitches 
+
+class Comment(db.Model):
+    
+    __tablename__= "comments"
+
+    id = db.Column(db.Integer,primary_key = True)
+    content = db.Column(db.String)
+    date = db.Column(db.String)
+    time = db.Column(db.String)
+    user_id = db.Column(db.Integer,db.ForeignKey("users.id"))
+    pitch_id = db.Column(db.Integer,db.ForeignKey("pitches.id"))
+
+    def save_comment(self):
+        db.session.ass(self)
+        db.session.commmit()
+
+    
