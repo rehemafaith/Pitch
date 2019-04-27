@@ -1,7 +1,5 @@
-
-
 {% extends "base.html" %}
-
+{% import "bootstrap/wtf.html" as wtf %}
 
 {% block content %}
     <div class="container">
@@ -35,9 +33,7 @@
             {% endfor %}
         {% else %}
             <h2>There are no pitches in this category</h2>
-            {% if current_user.is_authenticated %}
-            <a href="{{url_for('main.new_pitch',uname = current_user.name)}}"><button class="btn btn-info">Add A Pitch</button></a>
-            {% endif %}
+        
         {% endif %}
     </div>
 {% endblock %}
