@@ -75,7 +75,9 @@ class Pitch(db.Model):
     time = db.Column(db.String)
     user_id = db.Column(db.Integer,db.ForeignKey('users.id'))
     comments = db.relationship("Comment", backref = "pitch", lazy = "dynamic")
+    category = db.Column(db.String)
 
+    
     def save_pitch(self):
         db.session.add(self)
         db.session.commit()

@@ -9,21 +9,32 @@
             {{ message }}
         </div>
         {% endfor %}
+    
     <h1 class="text-center animated lightSpeedIn delay-0.4s">Welcome to 60sec Pitch</h1>
         <h2 class="text-center">Categories</h2>
         <div class="row categories">
-            <div class="category col-xs-12 col-sm-12 col-md-3 col-lg-3">
-                <a href="{{url_for('main.categories',category='product')}}">Pickup lines</a>
+          <div class="cards">
+              <div class="category col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                  <a href="{{url_for('main.categories',category='product')}}">Pickup lines</a>
+              </div>
+     
+          </div>
+          <div class="cards">
+              <div class="category col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                  <a href="{{url_for('main.categories',category='promotion')}}">Interview Pitch</a>
+               </div>
+          </div>
+          <div class="cards">
+              <div class="category col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                  <a href="{{url_for('main.categories',category='pick-up')}}">Product Pitch</a>
+              </div>
+          </div> 
+            <div class="cards">
+              <div class="category col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                  <a href="{{url_for('main.categories',category='funny')}}">Promotion Pitch</a>
+              </div>
             </div>
-            <div class="category col-xs-12 col-sm-12 col-md-3 col-lg-3">
-<a href="{{url_for('main.categories',category='promotion')}}">Interview Pitch</a>
-            </div>
-            <div class="category col-xs-12 col-sm-12 col-md-3 col-lg-3">
-<a href="{{url_for('main.categories',category='pick-up')}}">Product Pitch</a>
-            </div>
-            <div class="category col-xs-12 col-sm-12 col-md-3 col-lg-3">
-<a href="{{url_for('main.categories',category='funny')}}">Promotion Pitch</a>
-            </div>
+           
         </div>
         
     </div>
