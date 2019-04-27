@@ -5,6 +5,7 @@ from ..models import User,Role,Pitch,Comment
 from .. import db,photos
 from . import main 
 import datetime
+import markdown2
 
 
 
@@ -71,7 +72,7 @@ def update_pic(uname):
 @login_required
 def new_pitch(uname):
     form = PitchForm()
-    user = User.query.filter_by(name = uname).first()
+    user = User.query.filter_by(username = uname).first()
     if user is None:
         abort(404)
     title = "New Pitch"
@@ -82,7 +83,7 @@ def new_pitch(uname):
         category = form.category.data
         originalDate = datetime.datetime.now()
         time = str(originalDate.time())
-        time[0:5]
+        time =time[0:5]
         date = str(originalDate)
         date = date[0:10]
         new_pitch= Pitch(title= title, content = pitch,category= category,user = current_user, date = date, time = time)
@@ -91,7 +92,7 @@ def new_pitch(uname):
         pitches = Pitch.query.all()
         return redirect(url_for("main.categories",category = category))
 
-    return render_template("new_pitch.html",form = form, title = title)
+    return render_template("new_pitch.html",new_form = form, title = title)
 
 @main.route("/pitches/<category>")
 def categories(category):
@@ -133,3 +134,11 @@ def comment(user,pitch_id):
         return redirect(url_for("main.comments", pitch_id= pitch.id))
     return render_template("comment.html,title = pitch.title,form = form, pitch = pitch ")
 
+# @main.route('/pitch/<int:id>')
+# def single_pitch(id):
+#     pitch=Pitch.query.get(id)
+#     if pitch is None:
+#         abort(404)
+#     format_pitch = markdown2.markdown(pitch.pitches,extras=["code-friendly","fenced-code-blocks"])
+#     return render_template('pitch.html',pitch = pitch,format_pitch=formart_pitch)
+    
