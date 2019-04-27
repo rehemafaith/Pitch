@@ -5,7 +5,7 @@
 ### Description
 This is an app that allows users to post pitches and comment on other people's pitches
 
-### User Stories :family:
+### User Stories :
 1. As a user, I would like to see the pitches other people have posted.
 1. As a user, I would like to be signed in for me to leave a comment
 1. As a user, I would like to receive a welcoming email once I sign up.
@@ -15,7 +15,7 @@ This is an app that allows users to post pitches and comment on other people's p
 1. As a user, I would like to view the different categories.
 
 
-### Tech used :computer: 
+### Tech used : 
 1. Python
 2. Flask
 3. Postgres
@@ -43,7 +43,7 @@ $ sudo apt-get install postgresql postgresql-contrib libpq-dev
 To access this application on your command line, you need to clone it 
 `
 
-### Known Bugs :x:
+### Known Bugs :
 Currently, there are no known bugs. 
 
 ### Licence
