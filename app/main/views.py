@@ -1,8 +1,12 @@
-from .forms import UpdateProfile
+from .forms import Updateprofile,PitchForm,Comment
 from flask_login import login_required,current_user
 from flask import render_template,request,redirect,url_for,abort
-from ..models import User
+from ..models import User,Role,Pitch,Comment
 from .. import db,photos
+from . import main 
+import datetime
+
+
 
 
 @main.route('/')
@@ -22,20 +26,20 @@ def index():
 @main.route('/user/<uname>')
 def profile(uname):
   user = User.query.filter_by(username = uname).first()
-
+  pitches = Pitch.query.filter_by(username = uname).order_by(Pitch.time.desc())
+  title = user.name.upper()
   if user is None:
       abort(404)
 
-  return render_template("profile/profile.html",user = user)
+  return render_template("profile/profile.html",pitches = pitches,user = user, title = title)
 
 
 @main.route('/user/<uname>/update',methods = ['GET','POST'])
 @login_required
 def update_profile(uname):
     user = User.query.filter_by(username = uname).first()
-    if user is None:
-        abort(404)
-
+    
+    
     form = UpdateProfile()
 
     if form.validate_on_submit():
@@ -54,18 +58,16 @@ def update_profile(uname):
 @login_required
 def update_pic(uname):
     user = User.query.filter_by(username = uname).first()
+    title = "Edit Profile"
     if 'photo' in request.files:
         filename = photos.save(request.files['photo'])
         path = f'photos/{filename}'
         user.profile_pic_path = path
         db.session.commit()
-    return redirect(url_for('main.profile',uname=uname))files['photo'])
-        path = f'photos/{filename}'
-        user.profile_pic_path = path 
-        db.session.commit()
     return redirect(url_for('main.profile',uname=uname))
+       
 
-@main.route('/<,uname>/new/pitch', methods = ['GET','POST'])
+@main.route('/<uname>/new/pitch', methods = ['GET','POST'])
 @login_required
 def new_pitch(uname):
     form = PitchForm()
@@ -78,23 +80,28 @@ def new_pitch(uname):
         title = form.title.data
         pitch = form.pitch.data
         category = form.category.data
-
-        new_pitch= Pitch(title= title, content = pitch,category= category,user = current_user)
+        originalDate = datetime.datetime.now()
+        time = str(originalDate.time())
+        time[0:5]
+        date = str(originalDate)
+        date = date[0:10]
+        new_pitch= Pitch(title= title, content = pitch,category= category,user = current_user, date = date, time = time)
 
         new_pitch.save_pitch()
         pitches = Pitch.query.all()
         return redirect(url_for("main.categories",category = category))
 
-return render_template("new_pitch.html",form = form, title = title)
+    return render_template("new_pitch.html",form = form, title = title)
 
 @main.route("/pitches/<category>")
 def categories(category):
     pitches = None
     if category == "all":
-        pitches = Pitch.query.all()
+        pitches = Pitch.query.order_by(Pitch.time.desc())
 
     else:
-        pitches = Pitch.query.filter_by(category = category).all()
+        pitches = Pitch.query.filter_by(category = category).order_by(Pitch.time.desc()).all()
+
 
     return render_template("pitch.html",pitches = pitches, title = category.upper())
 
@@ -116,7 +123,11 @@ def comment(user,pitch_id):
     title = "Add Comment"
     if form.validate_on_submit():
         content = form.content.data
-        
+        originalDate = datetime.datetime.now()
+        time = str(originalDate.time())
+        time = time[0:5]
+        date = str(originalDate)
+        date = date[0:10]
         new_comment = Comment(content = content, user = user, pitch = pitch)
         new_comment.save_comment()
         return redirect(url_for("main.comments", pitch_id= pitch.id))

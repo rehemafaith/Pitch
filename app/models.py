@@ -1,4 +1,4 @@
-from . import db
+from app import db
 from werkzeug.security import generate_password_hash,check_password_hash 
 from flask_login import UserMixin
 from . import login_manager
@@ -20,8 +20,8 @@ class User(UserMixin,db.Model):
     bio = db.Column(db.String(255))
     profile_pic_path = db.Column(db.String())
     pass_secure = db.Column(db.String(255))
-    pitches = db.relationship('Review', backref = 'user',lazy = "dynamic")
-    comments = db.relationship("comment", backref="user", lazy = "dynamic")
+    pitches = db.relationship('Pitch', backref = 'user',lazy = "dynamic")
+    comments = db.relationship("Comment", backref="user", lazy = "dynamic")
 
     def save_user(self):
         db.session.add(self)
@@ -69,10 +69,10 @@ class Pitch(db.Model):
     __tablename__ = 'pitches'
 
     id = db.Column(db.Integer,primary_key= True)
-    post = db.Column(db.String(255), index = True)
-    title = db.Column(db.String(255),index = True)
+    content = db.Column(db.String)
+    title = db.Column(db.String)
     date = db.Column(db.String)
-    time = db.Columns(db.String)
+    time = db.Column(db.String)
     user_id = db.Column(db.Integer,db.ForeignKey('users.id'))
     comments = db.relationship("Comment", backref = "pitch", lazy = "dynamic")
 

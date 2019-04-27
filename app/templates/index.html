@@ -1,3 +1,30 @@
-<h1>
-  Hello
-</h1>
+{% extends "base.html" %}
+
+
+{% block content %}
+    <div class="container">
+        {% for message in get_flashed_messages() %}
+        <div class="alert alert-info">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ message }}
+        </div>
+        {% endfor %}
+    <h1 class="text-center animated lightSpeedIn delay-0.4s">Welcome to 60sec Pitch</h1>
+        <h2 class="text-center">Categories</h2>
+        <div class="row categories">
+            <div class="category col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                <a href="{{url_for('main.categories',category='product')}}">Pickup lines</a>
+            </div>
+            <div class="category col-xs-12 col-sm-12 col-md-3 col-lg-3">
+<a href="{{url_for('main.categories',category='promotion')}}">Interview Pitch</a>
+            </div>
+            <div class="category col-xs-12 col-sm-12 col-md-3 col-lg-3">
+<a href="{{url_for('main.categories',category='pick-up')}}">Product Pitch</a>
+            </div>
+            <div class="category col-xs-12 col-sm-12 col-md-3 col-lg-3">
+<a href="{{url_for('main.categories',category='funny')}}">Promotion Pitch</a>
+            </div>
+        </div>
+        
+    </div>
+{% endblock %}
