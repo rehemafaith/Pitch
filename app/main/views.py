@@ -5,7 +5,7 @@ from ..models import User,Role,Pitch,Comment
 from .. import db,photos
 from . import main 
 import datetime
-import markdown2
+
 
 
 
@@ -139,6 +139,6 @@ def comment(user,pitch_id):
 #     pitch=Pitch.query.get(id)
 #     if pitch is None:
 #         abort(404)
-#     format_pitch = markdown2.markdown(pitch.pitches,extras=["code-friendly","fenced-code-blocks"])
+#     
 #     return render_template('pitch.html',pitch = pitch,format_pitch=formart_pitch)
     
