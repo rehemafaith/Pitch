@@ -54,7 +54,7 @@ def register():
         bio = ""
         new_user = User(username = username, email = email, password = pass_sec, profile_pic_path = profile_pic_path,bio =bio)
         new_user.save_user()        
-        mail_message("Welcome to 60sec pitch","email/welcome_user")
+        mail_message("Welcome to 60sec pitch","email/welcome_user",new_user.email,new_user=new_user)
         return redirect (url_for('auth.login'))
         title = "New Account"
 

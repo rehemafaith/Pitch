@@ -1,7 +1,7 @@
 from .forms import Updateprofile,PitchForm,Comment
 from flask_login import login_required,current_user
 from flask import render_template,request,redirect,url_for,abort
-from ..models import User,Role,Pitch,Comment
+from ..models import User,Pitch,Comment
 from .. import db,photos
 from . import main 
 import datetime
@@ -66,33 +66,7 @@ def update_pic(uname):
         user.profile_pic_path = path
         db.session.commit()
     return redirect(url_for('main.profile',uname=uname))
-       
 
-@main.route('/<uname>/new/pitch', methods = ['GET','POST'])
-@login_required
-def new_pitch(uname):
-    form = PitchForm()
-    user = User.query.filter_by(username = uname).first()
-    if user is None:
-        abort(404)
-    title = "New Pitch"
-
-    if form.validate_on_submit():
-        title = form.title.data
-        pitch = form.pitch.data
-        category = form.category.data
-        originalDate = datetime.datetime.now()
-        time = str(originalDate.time())
-        time =time[0:5]
-        date = str(originalDate)
-        date = date[0:10]
-        new_pitch= Pitch(title= title, content = pitch,category= category,user = current_user, date = date, time = time)
-
-        new_pitch.save_pitch()
-        pitches = Pitch.query.all()
-        return redirect(url_for("main.categories",category = category))
-
-    return render_template("new_pitch.html",new_form = form, title = title)
 
 @main.route("/pitches/<category>")
 def categories(category):
@@ -105,6 +79,34 @@ def categories(category):
 
 
     return render_template("pitch.html",pitches = pitches, title = category.upper())
+
+       
+
+@main.route('/<uname>/new/pitch', methods = ['GET','POST'])
+@login_required
+def new_pitch(uname):
+    form = PitchForm()
+    user = User.query.filter_by(username = uname).first()
+    if user is None:
+        abort(404)
+    title1 = "New Pitch"
+
+    if form.validate_on_submit():
+        title = form.title.data
+        pitch = form.pitch.data
+        category = form.category.data
+        originalDate = datetime.datetime.now()
+        time = str(originalDate.time())
+        time =time[0:5]
+        date = str(originalDate)
+        date = date[0:10]
+        new_pitch1= Pitch(title= title, content = pitch,category= category,user = current_user, date = date, time = time)
+
+        new_pitch1.save_pitch()
+        pitches = Pitch.query.all()
+        return redirect(url_for("main.categories",category = category))
+
+    return render_template("new_pitch.html",new_form = form, title = title1)
 
 @main.route("/<pitch_id>/comments")
 @login_required
