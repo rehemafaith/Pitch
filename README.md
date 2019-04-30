@@ -1,4 +1,4 @@
-# Pitch Perfect
+# 60sec Pitch 
 
 ##  Author : Rehema Faith
 
