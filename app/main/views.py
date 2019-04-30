@@ -27,12 +27,12 @@ def index():
 @main.route('/user/<uname>')
 def profile(uname):
   user = User.query.filter_by(username = uname).first()
-  pitches = Pitch.query.filter_by(username = uname).order_by(Pitch.time.desc())
-  title = user.name.upper()
+#   pitches = Pitch.query.filter_by(username = uname).order_by(Pitch.time.desc())
+  title = user.username.upper()
   if user is None:
       abort(404)
 
-  return render_template("profile/profile.html",pitches = pitches,user = user, title = title)
+  return render_template("profile/profile.html",user = user, title = title)
 
 
 @main.route('/user/<uname>/update',methods = ['GET','POST'])
@@ -78,7 +78,7 @@ def categories(category):
         pitches = Pitch.query.filter_by(category = category).order_by(Pitch.time.desc()).all()
 
 
-    return render_template("pitch.html",pitches = pitches, title = category.upper())
+    return render_template("pitch.html",pitches = pitches)
 
        
 
@@ -87,26 +87,26 @@ def categories(category):
 def new_pitch(uname):
     form = PitchForm()
     user = User.query.filter_by(username = uname).first()
-    if user is None:
-        abort(404)
-    title1 = "New Pitch"
+    
+    
 
     if form.validate_on_submit():
-        title = form.title.data
+        
         pitch = form.pitch.data
-        category = form.category.data
+        # category = form.categories.data
         originalDate = datetime.datetime.now()
         time = str(originalDate.time())
         time =time[0:5]
         date = str(originalDate)
         date = date[0:10]
-        new_pitch1= Pitch(title= title, content = pitch,category= category,user = current_user, date = date, time = time)
+        new_pitch= Pitch( content = pitch,user_id = user.id,time = time, date = date)
 
-        new_pitch1.save_pitch()
+        new_pitch.save_pitch()
         pitches = Pitch.query.all()
-        return redirect(url_for("main.categories",category = category))
+        # return redirect(url_for("main.categories"))
 
-    return render_template("new_pitch.html",new_form = form, title = title1)
+    #",new_form = form)
+    return render_template("new_pitch.html", new_form = form)
 
 @main.route("/<pitch_id>/comments")
 @login_required
@@ -115,7 +115,7 @@ def view_comments(pitch_id):
     title = "Comments"
     comments = pitch.get_pitch_comments()
 
-    return render_template("comments.html",comments = comments, pitch = pitch, title = title)
+    return render_template("view_comments.html",comments = comments, pitch = pitch, title = title)
 
 @main.route("/<user>/pitch/<pitch_id>/new/comment", methods = ["GET","POST"])
 @login_required

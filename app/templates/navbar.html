@@ -11,17 +11,20 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li><a href="/">Home</a></li>
+                <li>
+                    <a href="/">Home</a>
+                </li>
+            </ul>   
         </div>
         <ul class="nav navbar-nav navbar-right">
             {% if current_user.is_authenticated %}
-            <li><a href="{{url_for('main.profile',uname=current_user.username)}}">Profile</a></li>
-            <li><a href="{{url_for('auth.logout')}}">Sign out</a></li>
-            <li><a href="{{url_for('main.new_pitch',uname = current_user.username)}}">New Pitch</a></li> 
+                <li><a href="{{url_for('main.profile',uname=current_user.username)}}">Profile</a></li>
+                <li><a href="{{url_for('auth.logout')}}">Sign out</a></li>
+                <li><a href="{{url_for('main.new_pitch',uname = current_user.username)}}">New Pitch</a></li> 
             {% else %}
-            <li><a href="{{url_for('auth.login')}}">Sign in</a></li>
+                <li><a href="{{url_for('auth.login')}}">Sign in</a></li>
             {%endif%}
-          </ul>
+        </ul>
 
     </div>
 </div>

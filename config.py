@@ -4,6 +4,7 @@ class Config:
   '''
   General configuration parent class
   '''
+  SQLALCHEMY_TRACK_MODIFICATIONS = False
   SECRET_KEY ='fefe'
   UPLOADED_PHOTOS_DEST ='app/static/photos'
 

@@ -11,7 +11,7 @@
         {% endfor %}
     <h1 class="text-center">{{title | upper}} PITCHES</h1>
         {% if pitches %}
-            {% for row in pitches | batch(2) %}
+            {% for row in pitches | batch(3) %}
             <div class="row pitch-row">
                 {% for pitch in row %}
                 <div class="col-md-5 pitch-card">
@@ -32,8 +32,13 @@
             </div> 
             {% endfor %}
         {% else %}
-            <h2>There are no pitches in this category</h2>
-        
+        <h2>You have no pitch yet</h2>
+            <h4>Add Your Pitch</h4>
+            <!-- </button> -->
+            <div class="container">
+                {{wtf.quick_form(new_form) }}
+                
+            </div>
         {% endif %}
     </div>
 {% endblock %}
